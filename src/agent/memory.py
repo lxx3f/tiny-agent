@@ -3,8 +3,8 @@ from datetime import datetime
 from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
 
-from config.settings import MEMORY_SIZE
-from agent.action import Action
+from src.config.settings import MEMORY_SIZE
+from src.agent.action import Action
 
 
 @dataclass
@@ -12,6 +12,7 @@ class MemoryItem:
     user_input: str
     ai_response: str
     timestamp: datetime
+    actions: List[Action]
 
 
 class Memory:
