@@ -1,6 +1,25 @@
 from dataclasses import dataclass
+from typing import List, Dict, Any, Optional
+
+_FUNCTION = Any
 
 
 @dataclass
 class Action:
-    pass
+    action_name: str
+    params: Dict[str, Any]
+    result: Any
+
+
+class ActionExecutor:
+
+    def __init__(self):
+        self.available_actions = {}
+
+    def register_action(self, action_name: str, action_function: _FUNCTION):
+        self.available_actions[action_name] = action_function
+
+    def execute(self, action_name, **params) -> Action:
+        result = self.available_actions[action_name](**params)
+        action = Action(action_name, params, result)
+        return action
