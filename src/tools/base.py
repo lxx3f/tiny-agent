@@ -15,3 +15,10 @@ class Tool(ABC):
     @abstractmethod
     def run(self, **kwargs) -> Any:
         pass
+
+    def format_params(self, params: dict) -> dict:
+        return {k: v for k, v in params.items() if k != "response"}
+
+    @abstractmethod
+    def format_result(self, result: Any, params: dict) -> str:
+        pass
