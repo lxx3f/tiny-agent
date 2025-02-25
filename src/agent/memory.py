@@ -14,7 +14,11 @@ class MemoryItem:
     timestamp: datetime
 
 
+# memory module
 class Memory:
+    """
+    memory module
+    """
 
     def __init__(self):
         self._memories: List[MemoryItem] = []
@@ -24,6 +28,9 @@ class Memory:
         message: str,
         memory_type: Literal["user", "ai", "action_result"],
     ) -> None:
+        """
+        add a memory item
+        """
         memory_item = MemoryItem(message=message,
                                  memory_type=memory_type,
                                  timestamp=datetime.now())
