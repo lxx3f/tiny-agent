@@ -1,6 +1,7 @@
 from openai import OpenAI
 from abc import ABC, abstractmethod
 from src.config.settings import DOUBAO_SETTINGS
+import logging
 
 
 class LLMService(ABC):
@@ -20,6 +21,7 @@ class DouBaoService(LLMService):
         )
 
     def call(self, prompt: str) -> str:
+        logging.info("call doubao:" + prompt)
         response = self._llm_client.chat.completions.create(
             model=DOUBAO_SETTINGS["model"],
             messages=[{

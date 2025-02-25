@@ -15,12 +15,9 @@ def build_plan_prompt(user_input: str, history: List[MemoryItem]) -> str:
     for item in history:
         if item.memory_type == "user":
             history_lines.append(f"用户: {item.message}")
-        elif item.memory_type == "ai":
-            history_lines.append(f"你: {item.message}")
         elif item.memory_type == "action":
             history_lines.append(f"{item.message}")
     history_text = "\n".join(history_lines) if history_lines else "无历史记录"
-
     return CHAIN_OF_THOUGHT.format(user_input=user_input,
                                    history=history_text,
                                    plan_format=PLAN_FORMAT)
@@ -40,8 +37,6 @@ def build_response_prompt(user_message: str, plan: str,
     for item in history:
         if item.memory_type == "user":
             history_lines.append(f"用户: {item.message}")
-        elif item.memory_type == "ai":
-            history_lines.append(f"你: {item.message}")
         elif item.memory_type == "action":
             history_lines.append(f"{item.message}")
     history_text = "\n".join(history_lines) if history_lines else "无历史记录"

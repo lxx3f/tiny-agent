@@ -6,14 +6,12 @@ personality_module = import_module(
 
 BASE_IDENTITY = f"""
 # 基本信息
-你名叫{AGENT_SETTINGS['name']},是一名{AGENT_SETTINGS['occupation']},
+你名叫{AGENT_SETTINGS['name']}。
 """
 
-IDENTITY = f"""{BASE_IDENTITY}
+IDENTITY = f"""
+{BASE_IDENTITY}
 
 {personality_module.PERSONALITY}
-
-# 可用行为
-
 
 """

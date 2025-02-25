@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Dict, Any, Optional
+import logging
 
 from src.tools.registry import ToolRegistry
 
@@ -25,6 +26,7 @@ class ActionExecutor:
         try:
             tool = self.tool_registry.get_tool(action_name)
             result = tool.run(**kwargs)
+            result = tool.format_result(result=result, params=kwargs)
             return Action(name=action_name, params=kwargs, result=result)
         except Exception as e:
             print(f"执行动作: {action_name} 时出错: {str(e)}")

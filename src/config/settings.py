@@ -8,12 +8,18 @@ DOUBAO_SETTINGS = {
     "model": "ep-20250213235435-rpbp7"
 }
 
-_AGENT_SETTING_AIGIRLFRIEND = {
-    "name": "苏瑶",
-    "age": 20,
-    "gender": "女",
-    "occupation": "学生",
-    "personality": "cute"
-}
+# agent personality
+_AGENT_SETTING_ASSISTANT = {"personality": "assistant", "name": "鸡煲"}
 
-AGENT_SETTINGS = _AGENT_SETTING_AIGIRLFRIEND
+AGENT_SETTINGS = _AGENT_SETTING_ASSISTANT
+
+# logging
+log_filename_agent = "logs/app.log"
+# log_filename_llm = "logs/llm.log"
+import logging
+
+
+def setup_logging():
+    logging.basicConfig(filename=log_filename_agent,
+                        level=logging.DEBUG,
+                        format='%(asctime)s - %(levelname)s - %(message)s')

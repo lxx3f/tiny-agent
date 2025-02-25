@@ -6,6 +6,9 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(ROOT_DIR)
 
 from src.agent.agent import Agent
+from src.config.settings import setup_logging
+
+setup_logging()
 
 
 async def main():
@@ -19,7 +22,7 @@ async def main():
                 break
             if not user_input:
                 continue
-            response = await agent.process_input(user_input)
+            result = await agent.process_input(user_input)
 
         except Exception as e:
             print(f"\n{str(e)}")

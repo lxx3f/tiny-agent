@@ -28,29 +28,18 @@ class Agent:
         plan: str = self.planner.create_plan(user_message, self.memory.memory)
         # 调用llm获取回复
         response: str = self._gen_response(user_message, plan)
-        thought, action_data = self._parse_response(response)
-        cur_actions: List[Action] = []
+        action_list: List = self._parse_response(response)
 
-        while action_data != {}:
-            action_name = action_data.get("name", "")
-            params = action_data.get("params", {})
+        for action in action_list:
+            action_name = action.get("name", "")
+            params = action.get("params", {})
 
             action = self.executor.execute(action_name, **params)
-            cur_actions.append(action)
-
-            tool = self.executor.tool_registry.get_tool(action_name)
-            if action_name in ["chat"]:
-                await self.memory.add_memory(thought, memory_type="ai")
+            if action_name == "null":
                 break
+            await self.memory.add_memory(action.result, memory_type="action")
 
-            await self.memory.add_memory(thought, memory_type="ai")
-            result_text = tool.format_result(action.result, action.params)
-            await self.memory.add_memory(result_text, memory_type="action")
-
-            response = self._gen_response(user_message, plan)
-            thought, action_data = self._parse_response(response)
-
-        return thought
+        return action.result
 
     def _gen_response(self, user_message: str, plan: str) -> str:
         """
@@ -68,10 +57,8 @@ class Agent:
         解析response
         """
         try:
-            data = json.loads(response)
-            thought = data.get("response", "")
-            action_data = data.get("action", {})
-            return thought, action_data
+            action_data = json.loads(response)
+            return action_data
         except json.JSONDecodeError:
             print(f"解析响应失败: {response}")
-            return "", {}
+            return []

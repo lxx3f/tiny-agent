@@ -5,12 +5,13 @@ from typing import List, Optional, Dict, Any, Literal
 
 from src.config.settings import MEMORY_SIZE
 from src.agent.action import Action
+import logging
 
 
 @dataclass
 class MemoryItem:
     message: str
-    memory_type: Literal["user", "ai", "action"]
+    memory_type: Literal["user", "action"]
     timestamp: datetime
 
 
@@ -27,7 +28,7 @@ class Memory:
     async def add_memory(
         self,
         message: str,
-        memory_type: Literal["user", "ai", "action"],
+        memory_type: Literal["user", "action"],
     ) -> None:
         """
         add a memory item
