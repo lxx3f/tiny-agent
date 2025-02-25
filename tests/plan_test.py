@@ -10,11 +10,11 @@ from src.agent.memory import MemoryItem
 def test_create_plan():
     planner = Planner()
     history = [
-        MemoryItem(user_input="你好啊",
+        MemoryItem(message="你好啊",
                    ai_response="你好呀，见到你真开心~",
                    timestamp=datetime.now(),
                    actions=[]),
-        MemoryItem(user_input="今晚月色真美",
+        MemoryItem(message="今晚月色真美",
                    ai_response="风也温柔",
                    timestamp=datetime.now(),
                    actions=[])

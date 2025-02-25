@@ -10,7 +10,7 @@ from src.agent.action import Action
 @dataclass
 class MemoryItem:
     message: str
-    memory_type: Literal["user", "ai", "action_result"]
+    memory_type: Literal["user", "ai", "action"]
     timestamp: datetime
 
 
@@ -18,6 +18,7 @@ class MemoryItem:
 class Memory:
     """
     memory module
+    保存历史对话和动作记录
     """
 
     def __init__(self):
@@ -26,7 +27,7 @@ class Memory:
     async def add_memory(
         self,
         message: str,
-        memory_type: Literal["user", "ai", "action_result"],
+        memory_type: Literal["user", "ai", "action"],
     ) -> None:
         """
         add a memory item

@@ -1,3 +1,6 @@
+"""
+思维链格式化模板
+"""
 from src.prompts.identity import IDENTITY
 
 PLAN_FORMAT = """

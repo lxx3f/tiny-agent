@@ -20,6 +20,9 @@ class ChatTool(Tool):
         print(f"\n{response}")
         return None
 
+    def format_result(self, result: Any, params: dict):
+        return ""
+
 
 class GiveGiftTool(Tool):
 
@@ -39,6 +42,9 @@ class GiveGiftTool(Tool):
     def run(self, response: str, **kwargs) -> Any:
         print(f"\n{response}")
         return None
+
+    def format_result(self, result: Any, params: dict):
+        return ""
 
 
 class AskGiftTool(Tool):
@@ -62,6 +68,12 @@ class AskGiftTool(Tool):
         user_input = input("\n是否愿意送出这个礼物？(y/n):").lower()
         return user_input.startswith('y')
 
+    def format_result(self, result: Any, params: dict) -> str:
+        if result:
+            return f"用户同意了送给你{params['gift_name']}"
+        else:
+            return "用户拒绝了送礼物的请求"
+
 
 class IntimateActionTool(Tool):
 
@@ -82,3 +94,6 @@ class IntimateActionTool(Tool):
         print(f"\n{response}")
         print(f"\n[执行动作]: {action}")
         return None
+
+    def format_result(self, result: Any, params: dict) -> str:
+        return ""

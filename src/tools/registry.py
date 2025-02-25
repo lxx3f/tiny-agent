@@ -1,3 +1,6 @@
+"""
+可用工具注册模块
+"""
 from typing import Dict, Type
 from src.tools.base import Tool
 

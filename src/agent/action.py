@@ -8,12 +8,15 @@ _FUNCTION = Any
 
 @dataclass
 class Action:
-    action_name: str
+    name: str
     params: Dict[str, Any]
     result: Any = None
 
 
 class ActionExecutor:
+    """
+    动作执行器,负责调用外部工具执行动作
+    """
 
     def __init__(self):
         self.tool_registry = ToolRegistry()
@@ -22,12 +25,10 @@ class ActionExecutor:
         try:
             tool = self.tool_registry.get_tool(action_name)
             result = tool.run(**kwargs)
-            return Action(action_name=action_name,
-                          params=kwargs,
-                          result=result)
+            return Action(name=action_name, params=kwargs, result=result)
         except Exception as e:
             print(f"执行动作: {action_name} 时出错: {str(e)}")
-            return Action(action_name=action_name,
+            return Action(name=action_name,
                           params=kwargs,
                           result={
                               "status": "error",

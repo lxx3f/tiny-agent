@@ -3,7 +3,7 @@ import json
 from src.agent.plan import Planner
 from src.agent.memory import Memory
 from src.agent.action import Action, ActionExecutor
-from src.llm.base import LLMService, DouBaoService
+from src.llm.base import DouBaoService
 from src.prompts.builder import build_response_prompt
 
 
@@ -28,45 +28,45 @@ class Agent:
         plan: str = self.planner.create_plan(user_message, self.memory.memory)
         # 调用llm获取回复
         response: str = self._gen_response(user_message, plan)
-        thought, data = self._parse_response(response)
+        thought, action_data = self._parse_response(response)
         cur_actions: List[Action] = []
 
-        while data != {}:
-            action_name = data.get("name", "")
-            params = data.get("params", {})
+        while action_data != {}:
+            action_name = action_data.get("name", "")
+            params = action_data.get("params", {})
 
             action = self.executor.execute(action_name, **params)
             cur_actions.append(action)
 
             tool = self.executor.tool_registry.get_tool(action_name)
-            if action_name in ["end", "chat"]:
+            if action_name in ["chat"]:
                 await self.memory.add_memory(thought, memory_type="ai")
                 break
 
             await self.memory.add_memory(thought, memory_type="ai")
             result_text = tool.format_result(action.result, action.params)
-            await self.memory.add_memory(result_text,
-                                         memory_type="action_result")
+            await self.memory.add_memory(result_text, memory_type="action")
 
-            response = self._gen_response(user_message, plan, cur_actions)
-            thought, data = self._parse_response(response)
+            response = self._gen_response(user_message, plan)
+            thought, action_data = self._parse_response(response)
 
         return thought
 
-    # 调用llm获取response
-    def _gen_response(self,
-                      user_message: str,
-                      plan: str,
-                      actions: List[Action] = []) -> str:
+    def _gen_response(self, user_message: str, plan: str) -> str:
+        """
+        调用llm获取response
+        """
         prompt = build_response_prompt(user_message=user_message,
                                        plan=plan,
-                                       actions=actions,
                                        history=self.memory.memory)
-        print(prompt)
-        print()
+        # print(prompt)
+        # print()
         return self.llm.call(prompt)
 
     def _parse_response(self, response: str) -> Tuple[str, Dict[str, Any]]:
+        """
+        解析response
+        """
         try:
             data = json.loads(response)
             thought = data.get("response", "")
