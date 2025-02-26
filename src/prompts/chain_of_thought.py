@@ -10,7 +10,6 @@ PLAN_FORMAT = """
 """
 
 CHAIN_OF_THOUGHT = f"""{IDENTITY}
-
 # 对话信息
 ## 历史对话记录
 {{history}}

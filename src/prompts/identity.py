@@ -11,7 +11,5 @@ BASE_IDENTITY = f"""
 
 IDENTITY = f"""
 {BASE_IDENTITY}
-
 {personality_module.PERSONALITY}
-
 """

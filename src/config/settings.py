@@ -2,10 +2,16 @@
 MEMORY_SIZE = 20
 
 # llm
-DOUBAO_SETTINGS = {
+DOUBAO_DATA = {
     "api_key": "a07bb9a3-5413-43f6-9a62-9de197fd0152",
     "base_url": "https://ark.cn-beijing.volces.com/api/v3",
     "model": "ep-20250213235435-rpbp7"
+}
+
+DOUBAO_EMBEDDING_DATA = {
+    "api_key": "a07bb9a3-5413-43f6-9a62-9de197fd0152",
+    "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+    "model": "doubao-embedding-text-240715"
 }
 
 # agent personality
@@ -23,3 +29,7 @@ def setup_logging():
     logging.basicConfig(filename=log_filename_agent,
                         level=logging.DEBUG,
                         format='%(asctime)s - %(levelname)s - %(message)s')
+
+
+# RAG
+RAG_DEFAULT_SAVE_PATH = "./src/rag/storage"

@@ -15,7 +15,6 @@ RESPONSE_PROMPT = f"""{IDENTITY}
 # 可执行动作
 {tools_desc}
 
-
 # 历史交互记录
 {{history}}
 ## 当前对话

@@ -22,6 +22,20 @@ def test_a_call():
     print(response)
 
 
+import os
+from openai import OpenAI
+from src.config.settings import DOUBAO_EMBEDDING_DATA
+
+# gets API Key from environment variable OPENAI_API_KEY
+client = OpenAI(api_key=DOUBAO_EMBEDDING_DATA["api_key"],
+                base_url=DOUBAO_EMBEDDING_DATA["base_url"])
+
+print("----- embeddings request -----")
+resp = client.embeddings.create(model="doubao-embedding-text-240715",
+                                input=["花椰菜又称菜花、花菜，是一种常见的蔬菜。"],
+                                encoding_format="float")
+print(resp)
+
 if __name__ == "__main__":
     test_doubao_call()
     # test_a_call()
