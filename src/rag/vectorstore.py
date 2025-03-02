@@ -120,7 +120,7 @@ class VectorStore:
             "doc_id": self.doc_ids[idx],
             "document": self.documents[idx]
         } for idx in top_k_indices]
-        print("和问题最相近的文本块内容:" + str(result))
+        # print("和问题最相近的文本块内容:" + str(result))
         return result
 
     def print_info(self):

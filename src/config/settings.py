@@ -33,3 +33,7 @@ def setup_logging():
 
 # RAG
 RAG_DEFAULT_SAVE_PATH = "./src/rag/storage"
+RAG_DEFAULT_KNOWLEDGE_BASE_PATH = "./src/rag/kdb"
+RAG_MAX_TOKEN_LEN = 600  # 最大token数目
+RAG_COVER_LEN = 150  # 重叠token数目
+RAG_TEXT_NUMS = 1  # 查询返回的文本数量
