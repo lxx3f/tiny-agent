@@ -1,11 +1,13 @@
 from typing import List, Dict
+from src.llm.base import DouBaoService
+from src.prompts.rag import RAG_FORMAT
 from src.rag.vectorstore import VectorStore
 from src.rag.embedding import EmbeddingModel
 from src.utils.load_file import ReadFiles
 from src.config.settings import (RAG_DEFAULT_SAVE_PATH,
                                  RAG_DEFAULT_KNOWLEDGE_BASE_PATH,
                                  RAG_MAX_TOKEN_LEN, RAG_COVER_LEN,
-                                 RAG_TEXT_NUMS)
+                                 RAG_TEXT_NUMS, RAG_LOAD_DB)
 
 
 def run_rag(question: str,
@@ -43,19 +45,30 @@ class RAG_Client():
     RAG代理类
     """
 
-    def __init__(self, knowledge_base_path: str = RAG_DEFAULT_SAVE_PATH):
-        # 加载并切分文档
-        docs = ReadFiles(knowledge_base_path).get_content(
-            max_token_len=RAG_MAX_TOKEN_LEN, cover_content=RAG_COVER_LEN)
-
-        self.vector = VectorStore(docs)
-
-        # 创建向量模型客户端
+    def __init__(self,
+                 knowledge_base_path: str = RAG_DEFAULT_KNOWLEDGE_BASE_PATH):
+        self.llm = DouBaoService()
         self.embedding = EmbeddingModel()
-        self.vector.get_vector(EmbeddingModel=self.embedding)
+        if RAG_LOAD_DB:
+            # 加载并切分文档
+            print("正在加载本地知识库~~~")
+            docs = ReadFiles(knowledge_base_path).get_content(
+                max_token_len=RAG_MAX_TOKEN_LEN, cover_content=RAG_COVER_LEN)
+            self.vector = VectorStore(docs)
+            self.vector.get_vector(EmbeddingModel=self.embedding)
+            # 将向量和文档保存到本地
+            self.vector.persist(path=RAG_DEFAULT_SAVE_PATH)
+        else:
+            self.vector = VectorStore()
+            self.vector.load_vector(RAG_DEFAULT_SAVE_PATH)
 
-        # 将向量和文档保存到本地
-        self.vector.persist(path=RAG_DEFAULT_SAVE_PATH)
+    def get_query_key(self, user_input: str) -> str:
+        prompt = RAG_FORMAT.format(user_input=user_input)
+        result = self.llm.call(prompt)
+        if result.startswith("no"):
+            return ""
+        else:
+            return result[4:]
 
     def query(self, query: str, k: int = RAG_TEXT_NUMS) -> List[str]:
         """
@@ -64,7 +77,8 @@ class RAG_Client():
         :param k: 返回最相似的文档数量，默认为1
         :return: 返回最相似文档内容列表。
         """
-        result: List[Dict[str,
-                          str]] = self.vector.query(query, self.embedding, k)
+        if query == "":
+            return []
+        result = self.vector.query(query, self.embedding, k)
         contents = [x["document"] for x in result]
         return contents

@@ -24,7 +24,8 @@ def build_plan_prompt(user_input: str, history: List[MemoryItem]) -> str:
 
 
 def build_response_prompt(user_message: str, plan: str,
-                          history: List[MemoryItem]) -> str:
+                          history: List[MemoryItem],
+                          rag_result: List[str]) -> str:
     # 处理plan内容, 移除一级标题
     plan_lines = []
     for line in plan.strip().split("\n"):
@@ -40,7 +41,9 @@ def build_response_prompt(user_message: str, plan: str,
         elif item.memory_type == "action":
             history_lines.append(f"{item.message}")
     history_text = "\n".join(history_lines) if history_lines else "无历史记录"
+    rag_text = "\n".join(rag_result)
 
     return RESPONSE_PROMPT.format(user_message=user_message,
                                   history=history_text,
-                                  plan=plan)
+                                  plan=plan,
+                                  rag_text=rag_text)

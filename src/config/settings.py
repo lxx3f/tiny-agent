@@ -3,13 +3,13 @@ MEMORY_SIZE = 20
 
 # llm
 DOUBAO_DATA = {
-    "api_key": "a07bb9a3-5413-43f6-9a62-9de197fd0152",
+    "api_key": "xxxxxx",
     "base_url": "https://ark.cn-beijing.volces.com/api/v3",
     "model": "ep-20250213235435-rpbp7"
 }
 
 DOUBAO_EMBEDDING_DATA = {
-    "api_key": "a07bb9a3-5413-43f6-9a62-9de197fd0152",
+    "api_key": "xxxxxx",
     "base_url": "https://ark.cn-beijing.volces.com/api/v3",
     "model": "doubao-embedding-text-240715"
 }
@@ -36,4 +36,5 @@ RAG_DEFAULT_SAVE_PATH = "./src/rag/storage"
 RAG_DEFAULT_KNOWLEDGE_BASE_PATH = "./src/rag/kdb"
 RAG_MAX_TOKEN_LEN = 600  # 最大token数目
 RAG_COVER_LEN = 150  # 重叠token数目
-RAG_TEXT_NUMS = 1  # 查询返回的文本数量
+RAG_TEXT_NUMS = 5  # 查询返回的文本数量
+RAG_LOAD_DB = False  # 是否重新加载本地数据库
