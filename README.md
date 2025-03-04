@@ -68,6 +68,29 @@ agent
 └─ __init__.py
 
 ```
+## llm模块
+目前使用了字节的豆包，以及字节的embedding模型
+
+## RAG模块
+本地知识库：原始文档保存在kdb目录,向量化知识库保存在storage目录,目前可支持读取markdown,txt,pdf格式的文档插入本地知识库。
+
+构建知识库的具体过程:读取原始文档 -> 文档切分 -> 文本向量化 -> 本地存储
+
+知识库检索的过程：把查询关键词向量化，再与向量知识库的内容进行比较（计算余弦值），然后返回最接近的若干条记录。
+
+# 功能演示
+## 基本对话
+![image1](images/image1.png)
+## 知识检索
+![image2](images/image2.png)
+
+
+# TODO
+- 实现UI模块
+- 增加更多行为工具扩展
+- 实现定时服务
+- 实现联网搜索和知识库动态更新
+- 增加更多可供调用的大模型（以及本地部署的模型）
 
 # 相关项目
 [agent_chat_wechat](https://github.com/panxingfeng/agent_chat_wechat): RAG部分的实现参考了该项目

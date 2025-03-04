@@ -5,6 +5,7 @@ from typing import Dict, Type
 from src.tools.base import Tool
 
 from src.tools.chat_tools import (ChatTool, NullTool)
+from src.tools.email_tools import Send_Email_Tool
 
 
 class ToolRegistry:
@@ -14,7 +15,7 @@ class ToolRegistry:
         self._register_default_tools()
 
     def _register_default_tools(self):
-        default_tools = [ChatTool, NullTool]
+        default_tools = [ChatTool, NullTool, Send_Email_Tool]
         for tool_cls in default_tools:
             tool = tool_cls()
             self._tools[tool.name()] = tool_cls

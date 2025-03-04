@@ -31,4 +31,6 @@ class DouBaoService(LLMService):
                 "role": "user",
                 "content": prompt
             }])
+        logging.info("doubao response:" +
+                     response.choices[0].message.content.strip())
         return response.choices[0].message.content.strip()
